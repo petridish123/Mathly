@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Input and Output</title>
+</head>
+<body>
+  <h1>Enter Your Input:</h1>
+  <input type="text" id="userInput">
+  <button onclick="displayInput()">Show Input</button>
+  <p id="output"></p>
+
+  <script>
+    function displayInput() {
+      const input = document.getElementById("userInput").value;
+      const outputElement = document.getElementById("output");
+      outputElement.textContent = "Your input: " + input;
+    }
+  </script>
+</body>
+</html>
