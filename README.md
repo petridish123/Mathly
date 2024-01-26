@@ -1,5 +1,1 @@
-# Andrew Darley and Peter Gordon's Hackathon project
-Project for BYU Ai Association Hackathon. 
-
-
-First attempt at terminal GIT
+Anyone who reads this is either named Peter or Andrew
