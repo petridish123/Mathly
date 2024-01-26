@@ -1,7 +1,7 @@
 from agents import convertLine, format, convertSet
 import re
 from latexcompiler import LC
-import os
+import os, sys
 
 from pathlib import Path
 from pytask import mark
@@ -88,6 +88,9 @@ This is a true statement:
 <<>>
 
 """
+
+if len(sys.argv) > 1:
+    file = sys.argv[1]
 
 try:
     replaced = full_replace(file, findicator, bindicator)
