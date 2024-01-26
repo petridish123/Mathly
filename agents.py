@@ -2,7 +2,7 @@ import openai
 import time
 
 # Initialize OpenAI Client
-client = openai.Client(api_key='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')
+client = openai.Client(api_key='') #HIDDEN!!!
 print("Client initialized")
 
 # Import the files
