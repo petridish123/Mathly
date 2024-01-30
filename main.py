@@ -1,6 +1,8 @@
 from agents import convertLine, format, convertSet, Center
 import re
-import sys
+import sys, os
+from pdflatex import PDFLaTeX
+
 
 out = None
 
@@ -57,7 +59,10 @@ def output(out):
     with open("output.tex", "w") as f:
         f.write(out)
 
+    pdf = os.system('pdflatex output.tex')
+
     # TODO: I'M WORKING ON THIS CODE VVV
+    # TODO: THIS CODE VVV IS BASURA. THAT CODE ^^^ IS FANTASTIC
     '''# Load the license
     license = pdf.License()
     license.set_license("Aspose.Total.lic")
@@ -107,9 +112,13 @@ def error():
     raise TypeError
 
 if len(sys.argv) > 2:
-    if sys.argv[1] == "-s":
+    if sys.argv[1] == "-s" or sys.argv[1] == "-t":
         if sys.argv[2] != "__OVERWRITE__":
-            file = sys.argv[2]
+            if sys.argv[1] == "-s":
+                file = sys.argv[2]
+            else:
+                with open(sys.argv[2], "r") as f:
+                    file = f.read()
         center = Center()
         center.create_threads()
         out = run(center, file)
