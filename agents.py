@@ -1,16 +1,19 @@
 import openai
 import time
 import json
+import os
+
+api_key = os.environ['OPENAI_API_KEY']
 
 # Initialize OpenAI Client
 class Center:
-    client = openai.Client(api_key='') # TODO: SPECIFY API KEY
+    client = openai.Client(api_key=api_key) # TODO: SPECIFY API KEY
 
     def __init__(self):
         print("Client initialized")
         filename = "threads.json"
         self.thread1, self.thread2, self.thread3 = load_threads_from_json(filename)
-        print("!")
+        print("Center Object Created")
         print(self.thread1, self.thread2, self.thread3)
         if self.thread1 is None or self.thread2 is None or self.thread3 is None:
             print("Threads not found in JSON file or JSON file not found. Creating threads...")
@@ -22,7 +25,7 @@ class Center:
         self.thread2 = self.client.beta.threads.create().id
         self.thread3 = self.client.beta.threads.create().id
         save_threads_to_json(self.thread1, self.thread2, self.thread3)
-        print("Threads created!!")
+        print("Threads created")
 
 # Import the files
 # specifications = center.client.files.create(
