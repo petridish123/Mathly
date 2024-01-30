@@ -109,6 +109,7 @@ def error():
     print("Invalid arguments: Should be: Operation, text")
     print("-s: Standard, text is document to be formatted")
     print("-f: Feedback, calls program again to reformat already outputted doc")
+    print("-t: Read File, passes in .txt file, text in file will be formatted")
     raise TypeError
 
 if len(sys.argv) > 2:
