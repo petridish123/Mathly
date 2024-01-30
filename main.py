@@ -1,8 +1,6 @@
 from agents import convertLine, format, convertSet, Center
 import re
 import sys
-import aspose.pdf as pdf
-
 
 out = None
 
