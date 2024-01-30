@@ -88,7 +88,7 @@ def run(center, file, findicator="<<", bindicator=">>"):
         replaced = replace_expressions(center, file, findicator, bindicator)
 
     formatted = extract_content_between_tags(format(center, replaced))[0]
-    print("\n\n" + formatted)
+    print(f"\\.TEX START:\n{formatted}\n\\.TEX END")
 
     return formatted
 
@@ -130,7 +130,7 @@ if len(sys.argv) > 2:
         if feedback.strip():
             formatted = extract_content_between_tags(
                 format(center, f"{feedback} \n Also, make sure you put the output in <<__remove__>> tags still"))[0]
-            print("\n\n" + formatted)
+            print(f"\\.TEX START:\n{formatted}\n\\.TEX END")
             out = formatted
 
 
