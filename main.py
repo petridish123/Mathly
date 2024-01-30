@@ -1,18 +1,18 @@
-from agents import convertLine, format, convertSet
+from agents import convertLine, format, convertSet, Center
 import re
-from latexcompiler import LC
-import os, sys
+import sys
+import aspose.pdf as pdf
 
-from pathlib import Path
-from pytask import mark
 
-def replace_expressions(input_string, findicator, bindicator, convert_function=convertLine):
+out = None
+
+def replace_expressions(center, input_string, findicator, bindicator, convert_function=convertLine):
     input_string = str(input_string)
     pattern = re.compile(f'{re.escape(findicator)}(.*?){re.escape(bindicator)}', re.DOTALL)
 
     def replace(match):
         expression = match.group(1)
-        replacement = convert_function(expression)
+        replacement = convert_function(center, expression)
         return replacement
 
     result = re.sub(pattern, replace, input_string)
@@ -34,7 +34,7 @@ def extract_content_between_tags(input_string):
     captures = re.findall(pattern, input_string, re.DOTALL)
     return captures
 
-def full_replace(input_string, findicator, bindicator, convert_function=convertSet):
+def full_replace(center, input_string, findicator, bindicator, convert_function=convertSet):
     input_string = str(input_string)
     pattern = re.compile(f'{re.escape(findicator)}(.*?){re.escape(bindicator)}', re.DOTALL)
 
@@ -47,68 +47,111 @@ def full_replace(input_string, findicator, bindicator, convert_function=convertS
 
     re.sub(pattern, collect_matches, input_string)
 
-    replacements = extract_content_between_tags(convert_function(str(matches)))
+    replacements = extract_content_between_tags(convert_function(center, str(matches)))
     replacements = purify_list(replacements)
     print(replacements)
     result = re.sub(pattern, lambda _: replacements.pop(0), input_string)
 
     return result
 
+def output(out):
+    # Output the file
+    with open("output.tex", "w") as f:
+        f.write(out)
 
-findicator = "<<"
-bindicator = ">>"
+    # TODO: I'M WORKING ON THIS CODE VVV
+    '''# Load the license
+    license = pdf.License()
+    license.set_license("Aspose.Total.lic")
+
+    # Create TeXLoadOptions class object
+    options = pdf.TeXLoadOptions()
+
+    # Create a Document class object
+    document = pdf.Document("output.tex", options)
+
+    # Convert Latex to PDF
+    document.save("output.pdf")
+
+    print("Latex to PDF Converted Successfully")'''
+    return out
+
+def run(center, file, findicator="<<", bindicator=">>"):
+    try:
+        replaced = full_replace(center, file, findicator, bindicator)
+    except:
+        print("AI failed to deliver. That dingus")
+        print("Moving on to slow but consistent backup plan")
+        replaced = replace_expressions(center, file, findicator, bindicator)
+
+    formatted = extract_content_between_tags(format(center, replaced))[0]
+    print("\n\n" + formatted)
+
+    return formatted
 
 file = """
-<<The integral from 0 to 5 of sin(x)dx>>
 
-Also this thing down here VV
+<<
+sqrt (9584 / x^3)
+>>
 
-<<The sum from n=0 to 4 of 1/n>>
+Dr. Jones was saying that in order to integrate by parts the formula goes as follows: 
 
-David's expression
-
-<<negative b plus or minus the square root of (b squared minus 4ac) all over 2a>>
-
-We're going to go back to the Matrix
-
-<<A matrix [[1, 2, 3] [4, 5, 6]]>>
-
-Elder Starr's
-
-<<e equals m c squared>>
-
-Nathan's:
-
-<<d dx of (x^2 + sinx plus 5e to the x minus bx)>>
-
-This is a true statement:
-
-<<6 in Roman Capital N>>
-
-<<>>
+<<integral of udv equals uv - integral of vdu>>
+<<pv = nrt>>
 
 """
 
-if len(sys.argv) > 1:
-    file = sys.argv[1]
+def error():
+    print("Invalid arguments: Should be: Operation, text")
+    print("-s: Standard, text is document to be formatted")
+    print("-f: Feedback, calls program again to reformat already outputted doc")
+    raise TypeError
 
-try:
-    replaced = full_replace(file, findicator, bindicator)
-except:
-    print("AI failed to deliver. That dingus")
-    print("Moving on to slow but consistent backup plan")
-    replaced = replace_expressions(file, findicator, bindicator)
-formatted = extract_content_between_tags(format(replaced))[0]
-print("\n\n" + formatted)
+if len(sys.argv) > 2:
+    if sys.argv[1] == "-s":
+        if sys.argv[2] != "__OVERWRITE__":
+            file = sys.argv[2]
+        center = Center()
+        center.create_threads()
+        out = run(center, file)
+    elif sys.argv[1] == "-f":
+        feedback = sys.argv[2]
+        out = None
+        center = Center()
+        if feedback.strip():
+            formatted = extract_content_between_tags(
+                format(center, f"{feedback} \n Also, make sure you put the output in <<__remove__>> tags still"))[0]
+            print("\n\n" + formatted)
+            out = formatted
+
+
+
+    else:
+        error()
+else:
+    error()
+
+
 '''doc = Document(content=formatted)
 doc.generate_tex('raw.txt')
 doc.generate_pdf('output.pdf', clean_tex=True)'''
 
-path = os.getcwd()
-filename = os.path.join(path, 'output.tex')
+# path = os.getcwd()
 
-with open(filename, "w") as f:
-    f.write(formatted)
+# filename = os.path.join(path, 'output.tex')
+
+"""while True:
+    with open(filename, "w") as f:
+        f.write(formatted)
+
+    feedback = input("Do you have any feedback, clarification, or suggestions? ")
+    if feedback.strip():
+        formatted = extract_content_between_tags(format(f"{feedback} \n Also, make sure you put the output in <<__remove__>> tags still"))[0]
+        print("\n\n" + formatted)
+
+    else:
+        break"""
 
 # print(filename)
 #
@@ -118,3 +161,6 @@ with open(filename, "w") as f:
                     bib_engine = 'biber', # Value is not necessary
                     no_bib = True, path = filename, # Provide the full path to the file!
                     folder_name = '.aux_files')'''
+
+if __name__ == "__main__":
+    output(out)
