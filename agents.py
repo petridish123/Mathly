@@ -210,6 +210,7 @@ def convertSet(center, messagea):
 
 def format(center, messagea):
     print("Formating file")
+    messagea = messagea + "Also, respect the margin. If you anticipate overflow, start a new line"
     # Step 2: Create a Thread
 
     # Step 3: Add a Message to a Thread
