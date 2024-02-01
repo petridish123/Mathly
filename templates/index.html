@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LaTeX Render</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: rgb(27, 31, 44);
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 50%;
+        }
+
+        h1, h2 {
+            color: cyan;
+        }
+
+        label {
+            color: white;
+        }
+
+        select {
+            padding: 5px;
+            border-radius: 5px;
+            background-color: rgb(36, 40, 56); /* Dark color for select dropdown */
+            color: white;
+            border: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: cyan;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
+
+        textarea {
+            padding: 10px;
+            width: 60%;
+            border-radius: 5px;
+            background-color: rgb(36, 40, 56); /* Dark color for text area */
+            color: white; /* Text color */
+            margin-top: 20px; /* Add margin to create space */
+        }
+
+        .latex-code {
+            display: none;
+            color: cyan;
+            margin-top: 20px;
+        }
+
+        #latexContent {
+            white-space: pre-wrap; /* Preserve line breaks */
+            text-align: left; /* Align left for LaTeX code */
+        }
+        img {
+            max-width: 19%
+        }
+    </style>
+</head>
+<body>
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+    <h1>LaTeX Render</h1>
+    <form id="pdfForm" method="POST" action="/generate">
+        <div>
+            <label for="flag">Choose Mode:</label>
+            <select id="flag" name="flag">
+                <option value="-s">Compile</option>
+                <option value="-f">Feedback</option>
+                <option value="-x">LaTeX</option> <!-- New option for LaTeX -->
+            </select>
+        </div>
+        <div id="input-container">
+            <label for="input">Input:</label><br>
+            <textarea id="input" name="input" rows="10" cols="50" placeholder="Enter your text here"></textarea>
+        </div>
+        <button type="submit">Generate</button>
+    </form>
+
+    <!-- Display area for LaTeX code -->
+    <div class="latex-code" id="latexCode">
+        <h2>Generated LaTeX Code</h2>
+        <pre id="latexContent"></pre>
+    </div>
+
+    <script>
+        // Function to handle form submission
+        function generateLaTeX() {
+            var form = document.getElementById("pdfForm");
+            var formData = new FormData(form);
+
+            // Send a POST request to the server
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/generate", true);
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest"); // Identify the request as AJAX
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var mode = document.getElementById("flag").value;
+                    if (mode === "-x") {
+                        // Display the output text in the textarea
+                        document.getElementById("latexContent").textContent = xhr.responseText;
+                        document.getElementById("latexCode").style.display = "block"; // Show the LaTeX code section
+                    } else {
+                        // Redirect to the preview page for other modes
+                        window.location.href = "/preview";
+                    }
+                }
+            };
+            xhr.send(formData);
+
+            return false; // Prevent the default form submission
+        }
+
+        // Call the function when the form is submitted
+        document.getElementById("pdfForm").addEventListener("submit", generateLaTeX);
+    </script>
+
+</body>
+</html>
