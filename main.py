@@ -59,8 +59,11 @@ def output(out):
     # Output the file
     with open("output.tex", "w") as f:
         f.write(out)
+    with open("output.txt", "w") as f:
+        f.write(out)
 
-    pdf = os.system('pdflatex output.tex')
+    if sys.argv[1] in ("-s", "-f"):
+        pdf = os.system('pdflatex output.tex')
 
     # TODO: I'M WORKING ON THIS CODE VVV
     # TODO: THIS CODE VVV IS BASURA. THAT CODE ^^^ IS FANTASTIC
@@ -111,14 +114,15 @@ def error():
     print("-s: Standard, text is document to be formatted")
     print("-f: Feedback, calls program again to reformat already outputted doc")
     print("-t: Read File, passes in .txt file, text in file will be formatted")
+    print("-x: LaTeX Output, text is document to be formatted")
     raise TypeError
 
 if len(sys.argv) > 2:
     print("Number of command line arguments: " + str(len(sys.argv)))
     print("Command line arguments: " + str(sys.argv))
-    if sys.argv[1] == "-s" or sys.argv[1] == "-t":
+    if sys.argv[1] == "-s" or sys.argv[1] == "-t" or sys.argv[1] == "-x":
         if sys.argv[2] != "__OVERWRITE__":
-            if sys.argv[1] == "-s":
+            if sys.argv[1] == "-s" or sys.argv[1] == "-x":
                 file = sys.argv[2]
             else:
                 with open(sys.argv[2], "r") as f:

@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, send_file
+from flask import Flask, render_template, request, redirect, send_file, Response
 
 app = Flask(__name__)
 
@@ -9,6 +9,7 @@ def index():
 
 import subprocess
 import shlex
+from flask import make_response
 
 @app.route('/generate', methods=['POST'])
 def generate():
@@ -24,7 +25,20 @@ def generate():
     # Run the command using subprocess module for better control
     subprocess.run(command)
 
-    # Redirect to the preview page
+    # Check if mode is '-x'
+    if mode == '-x':
+        # Read the content of output.txt
+        with open('output.txt', 'r') as file:
+            output_text = file.read()
+
+        # Create a response with the output text
+        response = make_response(output_text)
+        # Set the Content-Disposition header to inline
+        response.headers['Content-Disposition'] = 'inline'
+
+        return response
+
+    # Redirect to the preview page for other modes
     return redirect('/preview')
 
 
