@@ -1,1 +1,0 @@
-Make the text medium sized and place new lines between everything so it's more readable

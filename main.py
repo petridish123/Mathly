@@ -36,6 +36,7 @@ def extract_content_between_tags(input_string):
 
 def full_replace(center, input_string, findicator, bindicator, convert_function=convertSet):
     input_string = str(input_string)
+    print(f"String passed: {input_string}")
     pattern = re.compile(f'{re.escape(findicator)}(.*?){re.escape(bindicator)}', re.DOTALL)
 
     matches = []
@@ -113,6 +114,8 @@ def error():
     raise TypeError
 
 if len(sys.argv) > 2:
+    print("Number of command line arguments: " + str(len(sys.argv)))
+    print("Command line arguments: " + str(sys.argv))
     if sys.argv[1] == "-s" or sys.argv[1] == "-t":
         if sys.argv[2] != "__OVERWRITE__":
             if sys.argv[1] == "-s":

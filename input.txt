@@ -1,0 +1,17 @@
+
+
+<<Document Title: MY MATH HOMEWORK>>
+
+Andrew Darley
+Behold, an extremely complicated formula:
+
+We have the following equality:
+
+<<F(0) (log absolutevalue(d sub k) - n(gamma + log 8pi) - r sub 1 * pi/2)>>
+
+<< = Sum of the set rho: Phi(rho) - Phi(0) - Phi(1) + 2 * Sum from j=1 to infinity of: Sum of the set German Fraktur P: A fraction (log(N * German Fraktur P) / (N * German Fraktur P)^j/2) * F(j log(N * German Fraktur P))>>
+
+<<-rsub1 integral from 0 to infinity of: fraction(F(0)- F(x) / 2cosh(x/2))dx - n integral from 0 to infinity of: fraction(F(0) - F(x) / 2sinh(x / 2))dx>>,
+
+<<Italics: Where rho runs over the zeros of the Dedekind zeta function of K and German Fraktur P runs over the prime ideals of K.>>
+

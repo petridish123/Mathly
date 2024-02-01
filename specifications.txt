@@ -1,4 +1,3 @@
-When I say Roman capital, include the roman capital letter I indicate. Such as the Roman Capital Z which represents the set of integers
-But only modify the letter that comes directly after the text "Roman Capital", not anything before or after
+When I say RMNCPTL, I mean for you to change the letter in parentheses to a roman capital letter
 When I say "in" I mean the symbol that represents if an item is in a set
 Include the chemfig library for all chemistry questions and attempt to utilize it
